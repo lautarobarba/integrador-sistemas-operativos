@@ -1,35 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './normalize.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import './App.css';
+import { NavBar } from './components/NavBar';
+import { ProcesosInput } from './components/ProcesosInput';
+import { ProcesosList } from './components/ProcesosList';
+import { AppContextProvider } from './Context';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <AppContextProvider>
+      {/* El AppContextProvider es el encargado de guardar el estado actual de la app */}
+      <NavBar />
+      <ProcesosInput />
+      <ProcesosList />
+      {/* ICONO EN EJECUCION 
+      import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
+      <RunningWithErrorsIcon />
+       */}
+    </AppContextProvider>
+  );
 }
 
-export default App
+export default App;

@@ -39,7 +39,13 @@ export type EstadoSistema = {
   procesoNombre?: string;
 };
 
-export type ProcesoFinalizado = Proceso & {
+export type ProcesoEnEjecucion = Proceso & {
+  yaEjecutoSuTIP: boolean;
+  rafagaCPUPendienteEnEjecucion: number;
+  rafagaIOPendienteEnEjecucion: number;
+};
+
+export type ProcesoFinalizado = ProcesoEnEjecucion & {
   tiempoRetorno: number;
   //TODO:faltan mas datos del proceso finalizado
 };

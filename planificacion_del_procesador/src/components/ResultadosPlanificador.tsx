@@ -18,7 +18,10 @@ export const ResultadosPlanificador = () => {
                     {/* TODO: cambiar lista por diagrama de gant */}
                     <ul>
                         {resultadoPlanificador.historialEstados.map((estado: EstadoSistema) =>
-                            <li key={estado.orden}>{estado.orden}: {estado.tarea} - ({estado.procesoID}) {estado.procesoNombre}</li>
+                            <li key={estado.orden}>
+                                {estado.orden === 1 ? '[' : '('}{estado.orden - 1} - {estado.orden}]:
+                                {estado.tarea} - ({estado.procesoID}) {estado.procesoNombre}
+                            </li>
                         )}
                     </ul>
                     {/* TODO: Crear nueva data table con los datos de los procesos finalizados */}

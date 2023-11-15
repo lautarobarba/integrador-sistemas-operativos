@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../Context";
 import { ejecutarPlanificacion } from "../services/planificador";
 import { ResultadoPlanificador } from "../interfaces";
+import { enqueueSnackbar } from "notistack";
 
 export const PlanificadorForm = () => {
     const { status, setStatus, procesos, planificador, setPlanificador, setResultadoPlanificador } = useContext(AppContext);
@@ -19,6 +20,10 @@ export const PlanificadorForm = () => {
         const resultado: ResultadoPlanificador = await ejecutarPlanificacion(planificador);
         setResultadoPlanificador(resultado);
         setStatus('finalizado');
+        enqueueSnackbar('¡Tanda de procesos ejecutada!', {
+            anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+            variant: 'success',
+        });
     }
 
     useEffect(() => {
@@ -121,15 +126,15 @@ export const PlanificadorForm = () => {
                                 <Grid item xs={12} md={4}>
                                     <TextField
                                         type="number"
-                                        id='tfp'
-                                        name='tfp'
-                                        label='TFP'
-                                        value={tfpInput}
-                                        onChange={(event) => setTfpInput(Number(event.target.value))}
-                                        error={tfpInput < 0}
-                                        helperText={tfpInput < 0
+                                        id='tcp'
+                                        name='tcp'
+                                        label='TCP'
+                                        value={tcpInput}
+                                        onChange={(event) => setTcpInput(Number(event.target.value))}
+                                        error={tcpInput < 0}
+                                        helperText={tcpInput < 0
                                             ? "Por favor ingrese un valor >= 0"
-                                            : "Tiempo que utiliza el sistema operativo para terminar los procesos"
+                                            : "Tiempo de conmutación entre procesos"
                                         }
                                         fullWidth
                                         required
@@ -140,15 +145,15 @@ export const PlanificadorForm = () => {
                                 <Grid item xs={12} md={4}>
                                     <TextField
                                         type="number"
-                                        id='tcp'
-                                        name='tcp'
-                                        label='TCP'
-                                        value={tcpInput}
-                                        onChange={(event) => setTcpInput(Number(event.target.value))}
-                                        error={tcpInput < 0}
-                                        helperText={tcpInput < 0
+                                        id='tfp'
+                                        name='tfp'
+                                        label='TFP'
+                                        value={tfpInput}
+                                        onChange={(event) => setTfpInput(Number(event.target.value))}
+                                        error={tfpInput < 0}
+                                        helperText={tfpInput < 0
                                             ? "Por favor ingrese un valor >= 0"
-                                            : "Tiempo de conmutación entre procesos"
+                                            : "Tiempo que utiliza el sistema operativo para terminar los procesos"
                                         }
                                         fullWidth
                                         required

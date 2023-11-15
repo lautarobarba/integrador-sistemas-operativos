@@ -28,7 +28,13 @@ export type PlanificadorDeProcesos = {
 
 export type EstadoSistema = {
   orden: number;
-  tarea: 'ejecutando_cpu' | 'esperando_io' | 'esperando_idle';
+  tarea:
+    | 'ejecutando_cpu'
+    | 'esperando_io'
+    | 'esperando_idle'
+    | 'ejecutando_tip'
+    | 'ejecutando_tcp'
+    | 'ejecutando_tfp';
   procesoID?: number;
   procesoNombre?: string;
 };

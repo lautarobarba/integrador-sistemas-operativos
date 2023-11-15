@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import { Button, Grid, Typography } from '@mui/material';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
@@ -19,7 +19,6 @@ const VisuallyHiddenInput = styled('input')({
 
 export const ProcesosInput = () => {
   const { status, cargarProcesos } = useContext(AppContext);
-  // const [data, setData] = useState<string[]>([]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleUpload = (event: any) => {
@@ -60,13 +59,13 @@ export const ProcesosInput = () => {
       });
       cargarProcesos(newProcesos);
     };
-    reader.readAsText(file);
+    try {
+      reader.readAsText(file);
+    } catch (e) {
+      // console.log(e);
+      cargarProcesos([]);
+    }
   };
-
-  // // Load procesos on upload
-  // useEffect(() => {
-  //   console.log({ procesos: data });
-  // }, [data]);
 
   return (
     <Grid container justifyContent={'space-between'} style={{ margin: '1rem' }}>

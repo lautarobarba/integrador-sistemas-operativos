@@ -9,12 +9,11 @@ import { ProcesosInput } from './components/ProcesosInput';
 import { ProcesosList } from './components/ProcesosList';
 import { AppContextProvider } from './Context';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { orange } from '@mui/material/colors';
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#A01818',
+      main: '#000000',
     },
   },
 });

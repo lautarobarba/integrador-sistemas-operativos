@@ -4,6 +4,7 @@ import { Button, Grid, Typography } from '@mui/material';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import { AppContext } from '../Context';
 import { Proceso } from '../interfaces';
+import { enqueueSnackbar } from 'notistack';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -61,9 +62,17 @@ export const ProcesosInput = () => {
       if (newProcesos.length > 0) {
         setProcesos(newProcesos);
         setStatus('cargado');
+        enqueueSnackbar('¡Tanda de procesos cargada correctamente!', {
+          anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+          variant: 'success',
+        });
       } else {
         setProcesos([]);
         setStatus('preparado');
+        enqueueSnackbar('Error: la tanda no contenia procesos...', {
+          anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+          variant: 'error',
+        });
       }
     };
 
@@ -73,6 +82,10 @@ export const ProcesosInput = () => {
       // console.log(e);
       setProcesos([]);
       setStatus('preparado');
+      enqueueSnackbar('Tanda borrada. Suba la tanda nuevamente...', {
+        anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+        variant: 'info',
+      });
     }
   };
 

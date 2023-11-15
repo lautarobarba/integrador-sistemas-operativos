@@ -48,9 +48,11 @@ interface EjecutorProcesosStrategy {
 
 class EjecutorPE implements EjecutorProcesosStrategy {
   planificador: PlanificadorDeProcesos;
+  unidadDeTiempo: number;
 
   constructor(planificador: PlanificadorDeProcesos) {
     this.planificador = planificador;
+    this.unidadDeTiempo = 0;
   }
 
   public ejecutar = () => {
@@ -64,27 +66,29 @@ class EjecutorPE implements EjecutorProcesosStrategy {
     // Algoritmo de ejecución para política PE.
     // Ordeno por prioridad externa.
     const colaPendientes: ProcesoEnEjecucion[] = [];
-    this.planificador.procesos.forEach((proceso: Proceso) => {
-      colaPendientes.push({
-        ...proceso,
-        rafagaCPUPendienteEnEjecucion: proceso.duracionRafagaCPU,
-        rafagaIOPendienteEnEjecucion: proceso.duracionRafagaIO,
+    // Actualizo la colaDeProcesosPendientes para esta unidad de tiempo
+    // Primero filtro aquellos que arribaron en esta unidadDeTiempo
+    this.planificador.procesos
+      .filter((proceso: Proceso) => proceso.tiempoDeArribo === this.unidadDeTiempo)
+      // Luego creo los procesosEnejecucion para agregarlos a la cola
+      .forEach((proceso: Proceso) => {
+        colaPendientes.push({
+          ...proceso,
+          rafagaCPUPendienteEnEjecucion: proceso.duracionRafagaCPU,
+          rafagaIOPendienteEnEjecucion: proceso.duracionRafagaIO,
+        });
       });
-    });
     colaPendientes.sort(
       (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
         procesoB.prioridad - procesoA.prioridad,
     );
 
     // Ejecutar uno a uno sin interrupciones.
-    // let contador: number = 0;
-    // while (colaPendientes.length > 0 && contador < 10) {
     while (colaPendientes.length > 0) {
-      //   console.log({
-      //     colaPendientes,
-      //   });
       // Tomo el primer proceso en la cola de pendientes y ejecuto un tick de CPU
-      ejecutarUnTickCPU(colaPendientes[0], resultado.historialEstados);
+      if (colaPendientes[0].rafagaCPUPendienteEnEjecucion > 0) {
+        ejecutarUnTickCPU(colaPendientes[0], resultado.historialEstados);
+      }
 
       // Si completo rafaga de CPU en ejecucion y quedan rafagas I/O pendientes ejecuto un tick de I/O
       if (
@@ -120,7 +124,23 @@ class EjecutorPE implements EjecutorProcesosStrategy {
         colaPendientes.shift();
       }
 
-      //   contador = contador + 1;
+      this.unidadDeTiempo = this.unidadDeTiempo + 1;
+      // Actualizo la colaDeProcesosPendientes para esta unidad de tiempo
+      // Primero filtro aquellos que arribaron en esta unidadDeTiempo
+      this.planificador.procesos
+        .filter((proceso: Proceso) => proceso.tiempoDeArribo === this.unidadDeTiempo)
+        // Luego creo los procesosEnejecucion para agregarlos a la cola
+        .forEach((proceso: Proceso) => {
+          colaPendientes.push({
+            ...proceso,
+            rafagaCPUPendienteEnEjecucion: proceso.duracionRafagaCPU,
+            rafagaIOPendienteEnEjecucion: proceso.duracionRafagaIO,
+          });
+        });
+      colaPendientes.sort(
+        (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
+          procesoB.prioridad - procesoA.prioridad,
+      );
     }
 
     return resultado;

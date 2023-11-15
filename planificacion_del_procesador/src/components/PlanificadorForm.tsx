@@ -87,7 +87,11 @@ export const PlanificadorForm = () => {
                                             label='Quantum'
                                             value={quantumInput}
                                             onChange={(event) => setQuantumInput(Number(event.target.value))}
-                                            helperText={"Quantum para Round Robin"}
+                                            error={quantumInput < 0}
+                                            helperText={quantumInput < 0
+                                                ? "Por favor ingrese un valor >= 0"
+                                                : "Quantum para Round Robin"
+                                            }
                                             fullWidth
                                             required
                                             autoComplete='off'
@@ -103,7 +107,11 @@ export const PlanificadorForm = () => {
                                         label='TIP'
                                         value={tipInput}
                                         onChange={(event) => setTipInput(Number(event.target.value))}
-                                        helperText={"Tiempo que utiliza el sistema operativo para aceptar los nuevos procesos"}
+                                        error={tipInput < 0}
+                                        helperText={tipInput < 0
+                                            ? "Por favor ingrese un valor >= 0"
+                                            : "Tiempo que utiliza el sistema operativo para aceptar los nuevos procesos"
+                                        }
                                         fullWidth
                                         required
                                         autoComplete='off'
@@ -118,7 +126,11 @@ export const PlanificadorForm = () => {
                                         label='TFP'
                                         value={tfpInput}
                                         onChange={(event) => setTfpInput(Number(event.target.value))}
-                                        helperText={"Tiempo que utiliza el sistema operativo para terminar los procesos"}
+                                        error={tfpInput < 0}
+                                        helperText={tfpInput < 0
+                                            ? "Por favor ingrese un valor >= 0"
+                                            : "Tiempo que utiliza el sistema operativo para terminar los procesos"
+                                        }
                                         fullWidth
                                         required
                                         autoComplete='off'
@@ -133,7 +145,11 @@ export const PlanificadorForm = () => {
                                         label='TCP'
                                         value={tcpInput}
                                         onChange={(event) => setTcpInput(Number(event.target.value))}
-                                        helperText={"Tiempo de conmutación entre procesos"}
+                                        error={tcpInput < 0}
+                                        helperText={tcpInput < 0
+                                            ? "Por favor ingrese un valor >= 0"
+                                            : "Tiempo de conmutación entre procesos"
+                                        }
                                         fullWidth
                                         required
                                         autoComplete='off'
@@ -141,11 +157,19 @@ export const PlanificadorForm = () => {
                                     />
                                 </Grid>
                                 <Grid item container xs={12} justifyContent={'center'} style={{ margin: '1rem' }}>
-                                    <Button type="submit" variant="contained">Ejecutar Tanda</Button>
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        disabled={
+                                            (tipInput < 0) ||
+                                            (tfpInput < 0) ||
+                                            (tcpInput < 0) ||
+                                            (politicaInput === 'rr' && quantumInput < 0)
+                                        }
+                                    >Ejecutar Tanda</Button>
                                 </Grid>
                             </Grid>
                         </form>
-                        <p>{JSON.stringify(planificador)}</p>
                     </div>
                 </>
             )}

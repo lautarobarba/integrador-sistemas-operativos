@@ -11,6 +11,7 @@ import { AppContextProvider } from './Context';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { PlanificadorForm } from './components/PlanificadorForm';
 import { ResultadosPlanificador } from './components/ResultadosPlanificador';
+import { SnackbarProvider } from 'notistack';
 
 const theme = createTheme({
   palette: {
@@ -24,13 +25,17 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AppContextProvider>
+        {/* Notistack provider */}
+        <SnackbarProvider />
+
         {/* El AppContextProvider es el encargado de guardar el estado actual de la app */}
         <NavBar />
         <ProcesosInput />
         <ProcesosList />
 
         <PlanificadorForm />
-        {/* <hr /> */}
+        <hr style={{ width: '50%' }} />
+
         <ResultadosPlanificador />
         {/* ICONO EN EJECUCION 
         import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';

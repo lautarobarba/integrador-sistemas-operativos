@@ -4,14 +4,15 @@ import { Proceso } from './interfaces/Proceso.interface';
 type AppContextType = {
   procesos: Proceso[];
   status: 'iniciado' | 'cargado' | 'ejecutando' | 'finalizado';
-  //   setProcesos: (newValue: "light" | "dark") => void;
-  //   setProcesos: () => void;
+  setStatus: (newValue: 'iniciado' | 'cargado' | 'ejecutando' | 'finalizado') => void;
+  cargarProcesos: (procesos: Proceso[]) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
   procesos: [],
   status: 'iniciado',
-  //   setProcesos: () => {},
+  setStatus: () => {},
+  cargarProcesos: () => {},
 });
 
 type AppContextProviderProps = {
@@ -25,16 +26,14 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
     'iniciado',
   );
 
-  //   const setProcesos = () => {
-  // const newValue: 'light' | 'dark' = theme === 'light' ? 'dark' : 'light';
-  // setTheme(newValue);
-  // localStorage.setItem('theme', newValue);
-  //   };
+  const cargarProcesos = (procesos: Proceso[]) => {
+    setProcesos(procesos);
+    setStatus('cargado');
+  };
 
-  //   const changeTheme = (newValue: 'light' | 'dark') => {
-  //     setTheme(newValue);
-  //     localStorage.setItem('theme', newValue);
-  //   };
-
-  return <AppContext.Provider value={{ procesos, status }}>{children}</AppContext.Provider>;
+  return (
+    <AppContext.Provider value={{ procesos, status, setStatus, cargarProcesos }}>
+      {children}
+    </AppContext.Provider>
+  );
 };

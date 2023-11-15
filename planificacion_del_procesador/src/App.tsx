@@ -8,19 +8,31 @@ import { NavBar } from './components/NavBar';
 import { ProcesosInput } from './components/ProcesosInput';
 import { ProcesosList } from './components/ProcesosList';
 import { AppContextProvider } from './Context';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { orange } from '@mui/material/colors';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#A01818',
+    },
+  },
+});
 
 function App() {
   return (
-    <AppContextProvider>
-      {/* El AppContextProvider es el encargado de guardar el estado actual de la app */}
-      <NavBar />
-      <ProcesosInput />
-      <ProcesosList />
-      {/* ICONO EN EJECUCION 
+    <ThemeProvider theme={theme}>
+      <AppContextProvider>
+        {/* El AppContextProvider es el encargado de guardar el estado actual de la app */}
+        <NavBar />
+        <ProcesosInput />
+        <ProcesosList />
+        {/* ICONO EN EJECUCION 
       import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
       <RunningWithErrorsIcon />
-       */}
-    </AppContextProvider>
+    */}
+      </AppContextProvider>
+    </ThemeProvider>
   );
 }
 

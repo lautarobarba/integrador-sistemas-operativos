@@ -15,7 +15,7 @@ export const ResultadosPlanificador = () => {
               Resultados - Diagrama de GANTT
             </Typography>
           </Grid>
-          {/* TODO: cambiar lista por diagrama de gant */}
+          {/* TODO: cambiar lista por diagrama de GANTT */}
           <ul>
             {resultadoPlanificador.historialEstados.map((estado: EstadoSistema, index: number) => (
               <li key={index}>

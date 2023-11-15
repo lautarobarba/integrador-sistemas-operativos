@@ -172,11 +172,11 @@ class EjecutorPE implements EjecutorProcesosStrategy {
           // Significa que el proceso finalizo
           //  de todas maneras lo envio a la cola de listo para que ejecute su TFP
           this.colaListos.push({ ...this.colaBloqueadosPorIO[procesosBloqueadosRevisados] });
-          this.colaListos.sort(
-            (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
-              procesoB.prioridad - procesoA.prioridad,
-          );
         }
+        this.colaListos.sort(
+          (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
+            procesoB.prioridad - procesoA.prioridad,
+        );
         this.colaBloqueadosPorIO.splice(procesosBloqueadosRevisados, 1);
       } else {
         procesosBloqueadosRevisados = procesosBloqueadosRevisados + 1;
@@ -251,27 +251,20 @@ class EjecutorPE implements EjecutorProcesosStrategy {
           this.actualizarColaBloqueadosPorIO();
         }
 
-        // Si completo rafaga de CPU en ejecucion y quedan rafagas I/O pendientes ejecuto un tick de I/O
         if (
           this.colaListos[0].rafagaCPUPendienteEnEjecucion === 0 &&
           this.colaListos[0].rafagaIOPendienteEnEjecucion > 0
         ) {
+          // Si completo rafaga de CPU en ejecucion y quedan rafagas I/O pendientes ejecuto un tick de I/O
           // Paso el proceso a la cola de bloquados por I/O
           this.colaBloqueadosPorIO.push(this.colaListos[0]);
           this.colaListos.shift();
-        }
-
-        // Si completo la rafaga completa de ejecucion y no quedan rafagas pendientes
-        //    entonces lo quito de la cola de pendientes para continuar con el siguiente proceso
-        console.log({
-          contador: contador,
-          proceso: { ...this.colaListos[0] },
-        });
-
-        if (
+        } else if (
           this.colaListos[0].rafagaCPUPendienteEnEjecucion === 0 &&
           this.colaListos[0].rafagaIOPendienteEnEjecucion === 0
         ) {
+          // Si completo la rafaga completa de ejecucion y no quedan rafagas pendientes
+          //    entonces lo quito de la cola de pendientes para continuar con el siguiente proceso
           if (this.colaListos[0].cantidadDeRafagas === 0) {
             // TODO: aca estoy quitando un proceso de la cola de pendients lo que significa que finalizo.
             //  tengo que ver como sacar un reporte de sus datos y agregarlo a la lista de procesosFinalizados

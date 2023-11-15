@@ -79,7 +79,7 @@ export const ProcesosInput = () => {
         style={{ marginRight: '2rem' }}
       >
         {' '}
-        {status === 'iniciado' ? 'Subir Tanda' : 'Cambiar Tanda'}
+        {status === 'preparado' ? 'Subir Tanda' : 'Cambiar Tanda'}
         <VisuallyHiddenInput type='file' onChange={handleUpload} />
       </Button>
     </Grid>

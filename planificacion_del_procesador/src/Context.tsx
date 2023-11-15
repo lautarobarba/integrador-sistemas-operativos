@@ -3,16 +3,16 @@ import { Proceso } from './interfaces/Proceso.interface';
 
 type AppContextType = {
   procesos: Proceso[];
-  status: 'iniciado' | 'cargado' | 'ejecutando' | 'finalizado';
-  setStatus: (newValue: 'iniciado' | 'cargado' | 'ejecutando' | 'finalizado') => void;
+  status: 'preparado' | 'cargado' | 'ejecutando' | 'finalizado';
+  setStatus: (newValue: 'preparado' | 'cargado' | 'ejecutando' | 'finalizado') => void;
   cargarProcesos: (procesos: Proceso[]) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
   procesos: [],
-  status: 'iniciado',
-  setStatus: () => {},
-  cargarProcesos: () => {},
+  status: 'preparado',
+  setStatus: () => { },
+  cargarProcesos: () => { },
 });
 
 type AppContextProviderProps = {
@@ -22,8 +22,8 @@ type AppContextProviderProps = {
 export const AppContextProvider = (props: AppContextProviderProps) => {
   const { children } = props;
   const [procesos, setProcesos] = useState<Proceso[]>([]);
-  const [status, setStatus] = useState<'iniciado' | 'cargado' | 'ejecutando' | 'finalizado'>(
-    'iniciado',
+  const [status, setStatus] = useState<'preparado' | 'cargado' | 'ejecutando' | 'finalizado'>(
+    'preparado',
   );
 
   const cargarProcesos = (procesos: Proceso[]) => {

@@ -1,9 +1,11 @@
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../Context";
+import { ejecutarPlanificador } from "../services/planificador";
+import { ResultadoPlanificador } from "../interfaces";
 
 export const PlanificadorForm = () => {
-    const { status, planificador, setPlanificador, procesos } = useContext(AppContext);
+    const { status, setStatus, procesos, planificador, setPlanificador, setResultadoPlanificador } = useContext(AppContext);
 
     const [politicaInput, setPoliticaInput] = useState<'fcfs' | 'rr' | 'spn' | 'srtn' | 'pe'>("fcfs");
     const [quantumInput, setQuantumInput] = useState<number>(0);
@@ -12,9 +14,11 @@ export const PlanificadorForm = () => {
     const [tcpInput, setTcpInput] = useState<number>(0);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const ejecutarPlanificador = (event: any) => {
+    const ejecutarTanda = async (event: any) => {
         event.preventDefault();
-        console.log(planificador);
+        const resultado: ResultadoPlanificador = await ejecutarPlanificador(planificador);
+        setResultadoPlanificador(resultado);
+        setStatus('finalizado');
     }
 
     useEffect(() => {
@@ -48,7 +52,7 @@ export const PlanificadorForm = () => {
                     </Grid>
 
                     <div style={{ margin: '1rem' }}>
-                        <form onSubmit={ejecutarPlanificador}>
+                        <form onSubmit={ejecutarTanda}>
                             <Grid container spacing={2} justifyContent={'center'}>
                                 <Grid item xs={12} md={politicaInput === 'rr' ? 8 : 12}>
                                     <FormControl fullWidth>

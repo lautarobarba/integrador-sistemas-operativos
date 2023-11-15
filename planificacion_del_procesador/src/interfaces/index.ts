@@ -24,7 +24,9 @@ export type PlanificadorDeProcesos = {
   tcp: number;
   /* - Quantum (si fuera necesario) */
   quantum: number;
+};
 
+export type ResultadoPlanificador = {
   // Estado (Resultados) de la tanda
   tiempo_retorno_tanda: number;
   tiempo_medio_retorno_tanda: number;

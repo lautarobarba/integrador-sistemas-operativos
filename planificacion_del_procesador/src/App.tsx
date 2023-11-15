@@ -10,6 +10,7 @@ import { ProcesosList } from './components/ProcesosList';
 import { AppContextProvider } from './Context';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { PlanificadorForm } from './components/PlanificadorForm';
+import { ResultadosPlanificador } from './components/ResultadosPlanificador';
 
 const theme = createTheme({
   palette: {
@@ -29,6 +30,8 @@ function App() {
         <ProcesosList />
 
         <PlanificadorForm />
+        {/* <hr /> */}
+        <ResultadosPlanificador />
         {/* ICONO EN EJECUCION 
         import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
         <RunningWithErrorsIcon />

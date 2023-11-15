@@ -77,7 +77,14 @@ export const ProcesosInput = () => {
   };
 
   return (
-    <Grid container justifyContent={'space-between'} style={{ margin: '1rem' }}>
+    <Grid
+      container
+      justifyContent={{ xs: 'center', sm: 'space-between' }}
+      alignContent={'center'}
+      flexDirection={{ xs: 'column', sm: 'row' }}
+      style={{ padding: '1rem' }}
+      textAlign={{ xs: 'center', sm: 'left' }}
+    >
       <Typography variant='h6' component='span'>
         Lista de procesos
       </Typography>
@@ -85,9 +92,7 @@ export const ProcesosInput = () => {
         component='label'
         variant='contained'
         startIcon={<FormatListNumberedIcon />}
-        style={{ marginRight: '2rem' }}
       >
-        {' '}
         {status === 'preparado' ? 'Subir Tanda' : 'Cambiar Tanda'}
         <VisuallyHiddenInput type='file' onChange={handleUpload} />
       </Button>

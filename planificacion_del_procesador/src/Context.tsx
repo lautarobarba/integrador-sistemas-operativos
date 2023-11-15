@@ -1,18 +1,31 @@
 import { ReactNode, createContext, useState } from 'react';
-import { Proceso } from './interfaces/Proceso.interface';
+import { PlanificadorDeProcesos, Proceso } from './interfaces';
 
 type AppContextType = {
   procesos: Proceso[];
+  setProcesos: (procesos: Proceso[]) => void;
+  planificador: PlanificadorDeProcesos;
+  setPlanificador: (planificador: PlanificadorDeProcesos) => void;
   status: 'preparado' | 'cargado' | 'ejecutando' | 'finalizado';
   setStatus: (newValue: 'preparado' | 'cargado' | 'ejecutando' | 'finalizado') => void;
-  cargarProcesos: (procesos: Proceso[]) => void;
 };
 
 export const AppContext = createContext<AppContextType>({
   procesos: [],
+  setProcesos: () => { },
+  planificador: {
+    politica: 'fcfs',
+    procesos: [],
+    tip: 0,
+    tfp: 0,
+    tcp: 0,
+    quantum: 0,
+    tiempo_retorno_tanda: 0,
+    tiempo_medio_retorno_tanda: 0
+  },
+  setPlanificador: () => { },
   status: 'preparado',
   setStatus: () => { },
-  cargarProcesos: () => { },
 });
 
 type AppContextProviderProps = {
@@ -22,17 +35,22 @@ type AppContextProviderProps = {
 export const AppContextProvider = (props: AppContextProviderProps) => {
   const { children } = props;
   const [procesos, setProcesos] = useState<Proceso[]>([]);
+  const [planificador, setPlanificador] = useState<PlanificadorDeProcesos>({
+    politica: 'fcfs',
+    procesos: [],
+    tip: 0,
+    tfp: 0,
+    tcp: 0,
+    quantum: 0,
+    tiempo_retorno_tanda: 0,
+    tiempo_medio_retorno_tanda: 0
+  });
   const [status, setStatus] = useState<'preparado' | 'cargado' | 'ejecutando' | 'finalizado'>(
     'preparado',
   );
 
-  const cargarProcesos = (procesos: Proceso[]) => {
-    setProcesos(procesos);
-    setStatus('cargado');
-  };
-
   return (
-    <AppContext.Provider value={{ procesos, status, setStatus, cargarProcesos }}>
+    <AppContext.Provider value={{ procesos, setProcesos, planificador, setPlanificador, status, setStatus }}>
       {children}
     </AppContext.Provider>
   );

@@ -9,6 +9,7 @@ import { ProcesosInput } from './components/ProcesosInput';
 import { ProcesosList } from './components/ProcesosList';
 import { AppContextProvider } from './Context';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { PlanificadorForm } from './components/PlanificadorForm';
 
 const theme = createTheme({
   palette: {
@@ -26,10 +27,12 @@ function App() {
         <NavBar />
         <ProcesosInput />
         <ProcesosList />
+
+        <PlanificadorForm />
         {/* ICONO EN EJECUCION 
-      import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
-      <RunningWithErrorsIcon />
-    */}
+        import RunningWithErrorsIcon from '@mui/icons-material/RunningWithErrors';
+        <RunningWithErrorsIcon />
+      */}
       </AppContextProvider>
     </ThemeProvider>
   );

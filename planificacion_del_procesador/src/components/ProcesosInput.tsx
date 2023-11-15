@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Button, Grid, Typography } from '@mui/material';
 import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import { AppContext } from '../Context';
-import { Proceso } from '../interfaces/Proceso.interface';
+import { Proceso } from '../interfaces';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -18,7 +18,7 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 export const ProcesosInput = () => {
-  const { status, cargarProcesos } = useContext(AppContext);
+  const { status, setProcesos, setStatus } = useContext(AppContext);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleUpload = (event: any) => {
@@ -57,13 +57,22 @@ export const ProcesosInput = () => {
         } as Proceso;
         newProcesos.push(newProceso);
       });
-      cargarProcesos(newProcesos);
+
+      if (newProcesos.length > 0) {
+        setProcesos(newProcesos);
+        setStatus('cargado');
+      } else {
+        setProcesos([]);
+        setStatus('preparado');
+      }
     };
+
     try {
       reader.readAsText(file);
     } catch (e) {
       // console.log(e);
-      cargarProcesos([]);
+      setProcesos([]);
+      setStatus('preparado');
     }
   };
 

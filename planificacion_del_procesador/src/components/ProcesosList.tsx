@@ -2,7 +2,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useContext } from 'react';
 import { AppContext } from '../Context';
 import { Box, Grid } from '@mui/material';
-import { Proceso } from '../interfaces/Proceso.interface';
+import { Proceso } from '../interfaces';
 import workSVG from '../assets/work.svg';
 
 export const ProcesosList = () => {
@@ -62,7 +62,7 @@ export const ProcesosList = () => {
 
   return (
     <>
-      {(status == 'preparado' || procesos.length === 0) && (
+      {status == 'preparado' && (
         <div style={{ textAlign: 'center' }}>
           <img src={workSVG} title="Programming SVG" alt="Programming SVG" style={{ maxWidth: '40%' }} />
           <p style={{ fontWeight: 'bold', color: 'red' }}>
@@ -70,15 +70,17 @@ export const ProcesosList = () => {
           </p>
         </div>
       )}
-      {status !== 'preparado' && procesos.length > 0 && (
-        <Grid container justifyContent={'center'}>
-          <Box sx={{ width: '95%', minHeight: '200px' }}>
-            <DataGrid
-              rows={procesos}
-              columns={columns}
-            />
-          </Box>
-        </Grid>
+      {status !== 'preparado' && (
+        <div style={{ margin: '1rem' }}>
+          <Grid container justifyContent={'center'}>
+            <Box sx={{ width: '100%', minHeight: '200px' }}>
+              <DataGrid
+                rows={procesos}
+                columns={columns}
+              />
+            </Box>
+          </Grid>
+        </div>
       )}
     </>
   );

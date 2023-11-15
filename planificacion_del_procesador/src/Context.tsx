@@ -27,8 +27,10 @@ export const AppContext = createContext<AppContextType>({
   },
   setPlanificador: () => { },
   resultadoPlanificador: {
-    tiempo_retorno_tanda: 0,
-    tiempo_medio_retorno_tanda: 0
+    historialEstados: [],
+    procesosFinalizados: [],
+    tiempoRetornoTanda: 0,
+    tiempoMedioRetornoTanda: 0
   },
   setResultadoPlanificador: () => { },
 });
@@ -52,8 +54,10 @@ export const AppContextProvider = (props: AppContextProviderProps) => {
     quantum: 0,
   });
   const [resultadoPlanificador, setResultadoPlanificador] = useState<ResultadoPlanificador>({
-    tiempo_retorno_tanda: 0,
-    tiempo_medio_retorno_tanda: 0
+    historialEstados: [],
+    procesosFinalizados: [],
+    tiempoRetornoTanda: 0,
+    tiempoMedioRetornoTanda: 0
   });
 
   return (

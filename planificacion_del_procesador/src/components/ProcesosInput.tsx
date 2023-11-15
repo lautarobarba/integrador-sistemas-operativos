@@ -49,10 +49,10 @@ export const ProcesosInput = () => {
         const newProceso: Proceso = {
           id: index + 1,
           nombre: line.split(';')[0].trim(),
-          tiempo_de_arribo: Number(line.split(';')[1].trim()),
-          cantidad_de_rafagas: Number(line.split(';')[2].trim()),
-          duracion_rafaga_cpu: Number(line.split(';')[3].trim()),
-          duracion_rafaga_io: Number(line.split(';')[4].trim()),
+          tiempoDeArribo: Number(line.split(';')[1].trim()),
+          cantidadDeRafagas: Number(line.split(';')[2].trim()),
+          duracionRafagaCPU: Number(line.split(';')[3].trim()),
+          duracionRafagaIO: Number(line.split(';')[4].trim()),
           prioridad: Number(line.split(';')[5].trim()),
         } as Proceso;
         newProcesos.push(newProceso);

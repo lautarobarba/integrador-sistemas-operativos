@@ -1,11 +1,11 @@
 export type Proceso = {
-  id: number | string;
+  id: number;
   nombre: string;
-  tiempo_de_arribo: number;
-  cantidad_de_rafagas: number;
-  duracion_rafaga_cpu: number;
-  duracion_rafaga_io: number;
-  prioridad: number | string;
+  tiempoDeArribo: number;
+  cantidadDeRafagas: number;
+  duracionRafagaCPU: number;
+  duracionRafagaIO: number;
+  prioridad: number;
 };
 
 export type PlanificadorDeProcesos = {
@@ -26,8 +26,24 @@ export type PlanificadorDeProcesos = {
   quantum: number;
 };
 
+export type EstadoSistema = {
+  orden: number;
+  tarea: 'ejecutando_cpu' | 'esperando_io' | 'esperando_idle';
+  procesoID?: number;
+  procesoNombre?: string;
+};
+
+export type ProcesoFinalizado = Proceso & {
+  tiempoRetorno: number;
+  //TODO:faltan mas datos del proceso finalizado
+};
+
 export type ResultadoPlanificador = {
+  // Historial de estados para graficar
+  historialEstados: EstadoSistema[];
+  // Estado (Resultados) de cada proceso
+  procesosFinalizados: ProcesoFinalizado[];
   // Estado (Resultados) de la tanda
-  tiempo_retorno_tanda: number;
-  tiempo_medio_retorno_tanda: number;
+  tiempoRetornoTanda: number;
+  tiempoMedioRetornoTanda: number;
 };

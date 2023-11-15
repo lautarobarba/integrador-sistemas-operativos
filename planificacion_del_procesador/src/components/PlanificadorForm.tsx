@@ -1,7 +1,7 @@
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../Context";
-import { ejecutarPlanificador } from "../services/planificador";
+import { ejecutarPlanificacion } from "../services/planificador";
 import { ResultadoPlanificador } from "../interfaces";
 
 export const PlanificadorForm = () => {
@@ -16,7 +16,7 @@ export const PlanificadorForm = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ejecutarTanda = async (event: any) => {
         event.preventDefault();
-        const resultado: ResultadoPlanificador = await ejecutarPlanificador(planificador);
+        const resultado: ResultadoPlanificador = await ejecutarPlanificacion(planificador);
         setResultadoPlanificador(resultado);
         setStatus('finalizado');
     }

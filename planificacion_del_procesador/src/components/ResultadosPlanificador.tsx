@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { AppContext } from '../Context';
 import { EstadoSistema } from '../interfaces';
 import { Grid, Typography } from '@mui/material';
+import { DiagramaGantt } from './DiagramaGantt';
 
 export const ResultadosPlanificador = () => {
   const { status, resultadoPlanificador } = useContext(AppContext);
@@ -15,6 +16,7 @@ export const ResultadosPlanificador = () => {
               Resultados - Diagrama de GANTT
             </Typography>
           </Grid>
+          <DiagramaGantt />
           {/* TODO: cambiar lista por diagrama de GANTT */}
           <ul>
             {resultadoPlanificador.historialEstados.map((estado: EstadoSistema, index: number) => (

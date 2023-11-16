@@ -1,0 +1,4 @@
+#COMENTATIO: Trabajo Práctico 3 - Ejercicio 6
+#NOMBRE_PROCESO     ;#TIEMPO_ARRIBO     ;#CANTIDAD_RAFAGAS      ;#DURACION_RAFAGAS_CPU      ;#DURACION_RAFAGAS_IO       ;#PRIORIDAD
+ProcA               ;2                  ;1                      ;3                          ;2                          ;3
+#NOMBRE_PROCESO     ;#TIEMPO_ARRIBO     ;#CANTIDAD_RAFAGAS      ;#DURACION_RAFAGAS_CPU      ;#DURACION_RAFAGAS_IO       ;#PRIORIDAD

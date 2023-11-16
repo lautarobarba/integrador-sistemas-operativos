@@ -13,7 +13,7 @@ export const ProcesosList = () => {
       field: 'id',
       headerName: 'ID',
       headerClassName: 'mui-table-header',
-      width: 90
+      width: 90,
     },
     {
       field: 'nombre',
@@ -31,7 +31,7 @@ export const ProcesosList = () => {
       editable: false,
     },
     {
-      field: 'cantidadDeRafagas',
+      field: 'cantidadDeRafagasCPU',
       headerName: 'Cantidad de rafagas',
       headerClassName: 'mui-table-header',
       width: 150,
@@ -64,7 +64,12 @@ export const ProcesosList = () => {
     <>
       {status == 'preparado' && (
         <div style={{ textAlign: 'center' }}>
-          <img src={workSVG} title="Programming SVG" alt="Programming SVG" style={{ maxWidth: '40%' }} />
+          <img
+            src={workSVG}
+            title='Programming SVG'
+            alt='Programming SVG'
+            style={{ maxWidth: '40%' }}
+          />
           <p style={{ fontWeight: 'bold', color: 'red' }}>
             Por favor cargue una tande de procesos para continuar...
           </p>
@@ -74,10 +79,7 @@ export const ProcesosList = () => {
         <div style={{ margin: '1rem' }}>
           <Grid container justifyContent={'center'}>
             <Box sx={{ width: '100%', minHeight: '200px' }}>
-              <DataGrid
-                rows={procesos}
-                columns={columns}
-              />
+              <DataGrid rows={procesos} columns={columns} />
             </Box>
           </Grid>
         </div>

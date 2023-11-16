@@ -11,7 +11,7 @@ const ejecutarUnTickCPU = (
   historial: EstadoSistema[],
   unidadDeTiempo: number,
 ) => {
-  console.log(`Ejecutando Tick de CPU para proceso: ${proceso.nombre}`);
+  // console.log(`Ejecutando Tick de CPU para proceso: ${proceso.nombre}`);
   proceso.rafagaCPUPendienteEnEjecucion = proceso.rafagaCPUPendienteEnEjecucion - 1;
   historial.push({
     orden: unidadDeTiempo,
@@ -26,10 +26,10 @@ const ejecutarUnTickIO = (
   historial: EstadoSistema[],
   unidadDeTiempo: number,
 ) => {
-  console.log(`Ejecutando Tick de I/O para proceso: ${proceso.nombre}`);
+  // console.log(`Ejecutando Tick de I/O para proceso: ${proceso.nombre}`);
   proceso.rafagaIOPendienteEnEjecucion = proceso.rafagaIOPendienteEnEjecucion - 1;
   historial.push({
-    orden: unidadDeTiempo,
+    orden: unidadDeTiempo - 1,
     tarea: 'esperando_io',
     procesoID: proceso.id,
     procesoNombre: proceso.nombre,
@@ -41,7 +41,7 @@ const ejecutarUnTickTIP = (
   historial: EstadoSistema[],
   unidadDeTiempo: number,
 ) => {
-  console.log(`Ejecutando Tick TIP para proceso: ${proceso.nombre}`);
+  // console.log(`Ejecutando Tick TIP para proceso: ${proceso.nombre}`);
   historial.push({
     orden: unidadDeTiempo,
     tarea: 'ejecutando_tip',
@@ -55,7 +55,7 @@ const ejecutarUnTickTCP = (
   historial: EstadoSistema[],
   unidadDeTiempo: number,
 ) => {
-  console.log(`Ejecutando Tick TFP para proceso: ${proceso.nombre}`);
+  // console.log(`Ejecutando Tick TFP para proceso: ${proceso.nombre}`);
   historial.push({
     orden: unidadDeTiempo,
     tarea: 'ejecutando_tcp',
@@ -69,7 +69,7 @@ const ejecutarUnTickTFP = (
   historial: EstadoSistema[],
   unidadDeTiempo: number,
 ) => {
-  console.log(`Ejecutando Tick TFP para proceso: ${proceso.nombre}`);
+  // console.log(`Ejecutando Tick TFP para proceso: ${proceso.nombre}`);
   historial.push({
     orden: unidadDeTiempo,
     tarea: 'ejecutando_tfp',
@@ -79,7 +79,7 @@ const ejecutarUnTickTFP = (
 };
 
 const ejecutarUnTickIDLE = (historial: EstadoSistema[], unidadDeTiempo: number) => {
-  console.log(`Ejecutando Tick IDLE`);
+  // console.log(`Ejecutando Tick IDLE`);
   historial.push({
     orden: unidadDeTiempo,
     tarea: 'esperando_idle',
@@ -131,11 +131,18 @@ class EjecutorPE implements EjecutorProcesosStrategy {
       .forEach((proceso: Proceso) => {
         this.colaListos.push({
           ...proceso,
-          yaEjecutoSuTIP: false,
+          // Resto 1 a la cantidad de rafagas pendientes
+          //  porque ya la estoy cargando en rafagaCPUPendienteEnEjecucion
+          cantidadDeRafagasCPU:
+            proceso.cantidadDeRafagasCPU > 0 ? proceso.cantidadDeRafagasCPU - 1 : 0,
+          yaEjecutoSuTIP: this.planificador.tip === 0 ? true : false,
           rafagaCPUPendienteEnEjecucion: proceso.duracionRafagaCPU,
           rafagaIOPendienteEnEjecucion: proceso.duracionRafagaIO,
         });
       });
+  };
+
+  ordenarColaListos = () => {
     this.colaListos.sort(
       (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
         procesoB.prioridad - procesoA.prioridad,
@@ -145,7 +152,7 @@ class EjecutorPE implements EjecutorProcesosStrategy {
   actualizarColaBloqueadosPorIO = () => {
     // Para cada proceso en la cola de bloqueados
     //  ejecuto 1 tick de I/O y los que se completan se pasan
-    //    a la cola de listos o finalizados segun corresponda
+    //    a la cola de listos
     let procesosBloqueadosRevisados: number = 0;
     while (procesosBloqueadosRevisados < this.colaBloqueadosPorIO.length) {
       if (this.colaBloqueadosPorIO[procesosBloqueadosRevisados].rafagaIOPendienteEnEjecucion > 0) {
@@ -155,28 +162,22 @@ class EjecutorPE implements EjecutorProcesosStrategy {
           this.unidadDeTiempo,
         );
       }
+      // Una vez que el proceso esta listo para ser ejecutado se pueden dar las siguientes situaciones:
+      // Una vez que ejecute un tick de I/O sobre el proceso se pueden dar las siguientes situaciones:
+      //  raf_io_pen > 0                      => El proceso continua bloqueado (no hago nada)
+      //  raf_io_pen = 0 && cant_raf_io > 0   => Resto 1 a cant_raf_io y envio a cola de listos
+      //  raf_io_pen = 0 && cant_raf_io = 0   => Envio a la cola de listos
       if (
         this.colaBloqueadosPorIO[procesosBloqueadosRevisados].rafagaIOPendienteEnEjecucion === 0
       ) {
-        if (this.colaBloqueadosPorIO[procesosBloqueadosRevisados].cantidadDeRafagas > 0) {
-          this.colaBloqueadosPorIO[procesosBloqueadosRevisados].cantidadDeRafagas =
-            this.colaBloqueadosPorIO[procesosBloqueadosRevisados].cantidadDeRafagas - 1;
-          this.colaBloqueadosPorIO[procesosBloqueadosRevisados].rafagaCPUPendienteEnEjecucion =
-            this.colaBloqueadosPorIO[procesosBloqueadosRevisados].duracionRafagaCPU;
+        if (this.colaBloqueadosPorIO[procesosBloqueadosRevisados].cantidadDeRafagasIO > 0) {
+          this.colaBloqueadosPorIO[procesosBloqueadosRevisados].cantidadDeRafagasIO =
+            this.colaBloqueadosPorIO[procesosBloqueadosRevisados].cantidadDeRafagasIO - 1;
           this.colaBloqueadosPorIO[procesosBloqueadosRevisados].rafagaIOPendienteEnEjecucion =
             this.colaBloqueadosPorIO[procesosBloqueadosRevisados].duracionRafagaIO;
-
-          // Significa que el proceso esta listo nuevamente para su siguiente rafaga
-          this.colaListos.push({ ...this.colaBloqueadosPorIO[procesosBloqueadosRevisados] });
-        } else {
-          // Significa que el proceso finalizo
-          //  de todas maneras lo envio a la cola de listo para que ejecute su TFP
-          this.colaListos.push({ ...this.colaBloqueadosPorIO[procesosBloqueadosRevisados] });
         }
-        this.colaListos.sort(
-          (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
-            procesoB.prioridad - procesoA.prioridad,
-        );
+
+        this.colaListos.push({ ...this.colaBloqueadosPorIO[procesosBloqueadosRevisados] });
         this.colaBloqueadosPorIO.splice(procesosBloqueadosRevisados, 1);
       } else {
         procesosBloqueadosRevisados = procesosBloqueadosRevisados + 1;
@@ -188,9 +189,11 @@ class EjecutorPE implements EjecutorProcesosStrategy {
   public ejecutar = () => {
     // Ejecutar uno a uno sin interrupciones.
     let contador: number = 0;
+    const habilitarCorte: boolean = true;
     while (
       this.resultado.procesosFinalizados.length < this.planificador.procesos.length &&
-      contador < 100
+      contador < 100 &&
+      habilitarCorte
     ) {
       contador = contador + 1;
       // Reviso si todavia no hay ningun proceso en la cola de listos y el procesador esta IDLE
@@ -198,13 +201,17 @@ class EjecutorPE implements EjecutorProcesosStrategy {
         // EL procesador esta en idle
         ejecutarUnTickIDLE(this.resultado.historialEstados, this.unidadDeTiempo);
         this.avanzarUnaUnidadDeTiempo();
-        this.actualizarColaListos();
         this.actualizarColaBloqueadosPorIO();
+        this.actualizarColaListos();
+        this.ordenarColaListos();
       } else {
+        // Tomo el primer proceso de la cola de listos (Previamente ordenada segun politica seleccionada)
         // Reviso si el proceso actual es distinto al ultimo ejecutado
         //  de ser necesario realizo TIP o TCP segun corresponda
+        console.log('probando tcp con:', this.ultimoProcesoEjecutadoID);
         if (
           this.ultimoProcesoEjecutadoID !== this.colaListos[0].id &&
+          this.ultimoProcesoEjecutadoID != -1 &&
           this.colaListos[0].yaEjecutoSuTIP
         ) {
           // Corresponde realizar TCP
@@ -215,12 +222,12 @@ class EjecutorPE implements EjecutorProcesosStrategy {
               this.unidadDeTiempo,
             );
             this.avanzarUnaUnidadDeTiempo();
-            this.actualizarColaListos();
             this.actualizarColaBloqueadosPorIO();
+            this.actualizarColaListos();
           }
           this.ultimoProcesoEjecutadoID = this.colaListos[0].id;
-        }
-        if (
+          this.ordenarColaListos();
+        } else if (
           this.ultimoProcesoEjecutadoID !== this.colaListos[0].id &&
           !this.colaListos[0].yaEjecutoSuTIP
         ) {
@@ -232,42 +239,47 @@ class EjecutorPE implements EjecutorProcesosStrategy {
               this.unidadDeTiempo,
             );
             this.avanzarUnaUnidadDeTiempo();
-            this.actualizarColaListos();
             this.actualizarColaBloqueadosPorIO();
+            this.actualizarColaListos();
           }
           this.colaListos[0].yaEjecutoSuTIP = true;
           this.ultimoProcesoEjecutadoID = this.colaListos[0].id;
-        }
+          this.ordenarColaListos();
+        } else {
+          // Una vez que el proceso esta listo para ser ejecutado se pueden dar las siguientes situaciones:
+          //  raf_cpu_pen > 0 && cant_raf_cpu >= 0    => Ejecuto un tick de CPU
+          //  raf_cpu_pen = 0 && cant_raf_cpu > 0     => Resto 1 a cant_raf_cpu y envio a cola bloqueados
+          //  raf_cpu_pen = 0 && cant_raf_cpu = 0     => Finalizo el proceso
 
-        // Tomo el primer proceso en la cola de pendientes y ejecuto un tick de CPU
-        if (this.colaListos[0].rafagaCPUPendienteEnEjecucion > 0) {
-          ejecutarUnTickCPU(
-            this.colaListos[0],
-            this.resultado.historialEstados,
-            this.unidadDeTiempo,
-          );
-          this.avanzarUnaUnidadDeTiempo();
-          this.actualizarColaListos();
-          this.actualizarColaBloqueadosPorIO();
-        }
+          // Tomo el primer proceso en la cola de pendientes y ejecuto un tick de CPU
+          if (this.colaListos[0].rafagaCPUPendienteEnEjecucion > 0) {
+            ejecutarUnTickCPU(
+              this.colaListos[0],
+              this.resultado.historialEstados,
+              this.unidadDeTiempo,
+            );
+            this.ultimoProcesoEjecutadoID = this.colaListos[0].id;
+            this.avanzarUnaUnidadDeTiempo();
+            this.actualizarColaBloqueadosPorIO();
+            this.actualizarColaListos();
+          }
 
-        if (
-          this.colaListos[0].rafagaCPUPendienteEnEjecucion === 0 &&
-          this.colaListos[0].rafagaIOPendienteEnEjecucion > 0
-        ) {
-          // Si completo rafaga de CPU en ejecucion y quedan rafagas I/O pendientes ejecuto un tick de I/O
-          // Paso el proceso a la cola de bloquados por I/O
-          this.colaBloqueadosPorIO.push(this.colaListos[0]);
-          this.colaListos.shift();
-        } else if (
-          this.colaListos[0].rafagaCPUPendienteEnEjecucion === 0 &&
-          this.colaListos[0].rafagaIOPendienteEnEjecucion === 0
-        ) {
-          // Si completo la rafaga completa de ejecucion y no quedan rafagas pendientes
-          //    entonces lo quito de la cola de pendientes para continuar con el siguiente proceso
-          if (this.colaListos[0].cantidadDeRafagas === 0) {
-            // TODO: aca estoy quitando un proceso de la cola de pendients lo que significa que finalizo.
-            //  tengo que ver como sacar un reporte de sus datos y agregarlo a la lista de procesosFinalizados
+          if (
+            this.colaListos[0].rafagaCPUPendienteEnEjecucion === 0 &&
+            this.colaListos[0].cantidadDeRafagasCPU > 0
+          ) {
+            // Si completo rafaga de CPU en ejecucion y quedan rafagas I/O pendientes ejecuto un tick de I/O
+            this.colaListos[0].cantidadDeRafagasCPU = this.colaListos[0].cantidadDeRafagasCPU - 1;
+            this.colaListos[0].rafagaCPUPendienteEnEjecucion = this.colaListos[0].duracionRafagaCPU;
+            // Paso el proceso a la cola de bloquados por I/O
+            this.colaBloqueadosPorIO.push(this.colaListos[0]);
+            this.colaListos.shift();
+          } else if (
+            this.colaListos[0].rafagaCPUPendienteEnEjecucion === 0 &&
+            this.colaListos[0].cantidadDeRafagasCPU === 0
+          ) {
+            // Si termina la rafaga completa de ejecucion y no quedan rafagas pendientes
+            //    entonces lo quito de la cola de pendientes para continuar con el siguiente proceso
 
             // Realizo TFP en caso de ser necesario
             for (let i = 0; i < this.planificador.tfp; i++) {
@@ -277,23 +289,20 @@ class EjecutorPE implements EjecutorProcesosStrategy {
                 this.unidadDeTiempo,
               );
               this.avanzarUnaUnidadDeTiempo();
-              this.actualizarColaListos();
               this.actualizarColaBloqueadosPorIO();
+              this.actualizarColaListos();
             }
 
+            // TODO: aca estoy quitando un proceso de la cola de pendients lo que significa que finalizo.
+            //  tengo que ver como sacar un reporte de sus datos y agregarlo a la lista de procesosFinalizados
             this.resultado.procesosFinalizados.push({
               ...this.colaListos[0],
               tiempoRetorno: this.unidadDeTiempo - 1,
             });
             this.colaListos.shift();
-          } else {
-            this.colaListos[0].cantidadDeRafagas = this.colaListos[0].cantidadDeRafagas - 1;
           }
+          this.ordenarColaListos();
         }
-
-        this.avanzarUnaUnidadDeTiempo();
-        this.actualizarColaListos();
-        this.actualizarColaBloqueadosPorIO();
       }
     }
 

@@ -2,8 +2,9 @@ export type Proceso = {
   id: number;
   nombre: string;
   tiempoDeArribo: number;
-  cantidadDeRafagas: number;
+  cantidadDeRafagasCPU: number;
   duracionRafagaCPU: number;
+  cantidadDeRafagasIO: number;
   duracionRafagaIO: number;
   prioridad: number;
 };

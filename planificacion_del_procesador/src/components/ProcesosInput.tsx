@@ -47,14 +47,26 @@ export const ProcesosInput = () => {
 
       const newProcesos: Proceso[] = [];
       parseData.forEach((line: string, index: number) => {
+        // Formato de cada linea del archivo:
+        //  NOMBRE_PROCESO;TIEMPO_ARRIBO;CANTIDAD_RAFAGAS;DURACION_RAFAGAS_CPU;DURACION_RAFAGAS_IO;PRIORIDAD
+        const nombreProceso: string = line.split(';')[0].trim();
+        const tiempoDeArribo: number = Number(line.split(';')[1].trim());
+        const cantidadDeRafagasCPU: number = Number(line.split(';')[2].trim());
+        const duracionRafagaCPU: number = Number(line.split(';')[3].trim());
+        const cantidadDeRafagasIO: number = cantidadDeRafagasCPU > 1 ? cantidadDeRafagasCPU - 1 : 0;
+        const duracionRafagaIO: number =
+          cantidadDeRafagasIO > 0 ? Number(line.split(';')[4].trim()) : 0;
+        const prioridad: number = Number(line.split(';')[5].trim());
+
         const newProceso: Proceso = {
           id: index + 1,
-          nombre: line.split(';')[0].trim(),
-          tiempoDeArribo: Number(line.split(';')[1].trim()),
-          cantidadDeRafagas: Number(line.split(';')[2].trim()),
-          duracionRafagaCPU: Number(line.split(';')[3].trim()),
-          duracionRafagaIO: Number(line.split(';')[4].trim()),
-          prioridad: Number(line.split(';')[5].trim()),
+          nombre: nombreProceso,
+          tiempoDeArribo: tiempoDeArribo,
+          cantidadDeRafagasCPU: cantidadDeRafagasCPU,
+          duracionRafagaCPU: duracionRafagaCPU,
+          cantidadDeRafagasIO: cantidadDeRafagasIO,
+          duracionRafagaIO: duracionRafagaIO,
+          prioridad: prioridad,
         } as Proceso;
         newProcesos.push(newProceso);
       });
@@ -101,11 +113,7 @@ export const ProcesosInput = () => {
       <Typography variant='h6' component='span'>
         Lista de procesos
       </Typography>
-      <Button
-        component='label'
-        variant='contained'
-        startIcon={<FormatListNumberedIcon />}
-      >
+      <Button component='label' variant='contained' startIcon={<FormatListNumberedIcon />}>
         {status === 'preparado' ? 'Subir Tanda' : 'Cambiar Tanda'}
         <VisuallyHiddenInput type='file' onChange={handleUpload} />
       </Button>

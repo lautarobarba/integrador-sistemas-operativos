@@ -11,11 +11,15 @@ export const ResultadosPlanificador = () => {
     <>
       {status === 'finalizado' && (
         <>
-          <Grid container justifyContent={'left'} style={{ margin: '1rem' }}>
+          <Grid container flexDirection={'column'} alignContent={'left'} style={{ margin: '1rem' }}>
             <Typography variant='h6' component='span'>
               Resultados - Diagrama de GANTT
             </Typography>
+            <Typography variant='caption' display='block' gutterBottom color={'blue'}>
+              INFO: Cada unidad de tiempo esta representada por 1segundo
+            </Typography>
           </Grid>
+
           <DiagramaGantt />
           {/* TODO: cambiar lista por diagrama de GANTT */}
           <ul>

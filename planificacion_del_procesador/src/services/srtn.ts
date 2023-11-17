@@ -14,7 +14,7 @@ import {
   ejecutarUnTickTIP,
 } from './common';
 
-export class EjecutorPE implements EjecutorProcesosStrategy {
+export class EjecutorSRTN implements EjecutorProcesosStrategy {
   planificador: PlanificadorDeProcesos;
   unidadDeTiempo: number;
   colaListos: ProcesoEnEjecucion[];
@@ -35,9 +35,8 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
       tiempoMedioRetornoTanda: 0,
     } as ResultadoPlanificador;
 
-    this.actualizarColaBloqueadosPorIO();
     this.actualizarColaListos();
-    this.ordenarColaListos();
+    this.actualizarColaBloqueadosPorIO();
   }
 
   avanzarUnaUnidadDeTiempo = () => {

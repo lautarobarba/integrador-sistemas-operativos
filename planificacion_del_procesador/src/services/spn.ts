@@ -14,7 +14,7 @@ import {
   ejecutarUnTickTIP,
 } from './common';
 
-export class EjecutorPE implements EjecutorProcesosStrategy {
+export class EjecutorSPN implements EjecutorProcesosStrategy {
   planificador: PlanificadorDeProcesos;
   unidadDeTiempo: number;
   colaListos: ProcesoEnEjecucion[];
@@ -35,8 +35,8 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
       tiempoMedioRetornoTanda: 0,
     } as ResultadoPlanificador;
 
-    this.actualizarColaBloqueadosPorIO();
     this.actualizarColaListos();
+    this.actualizarColaBloqueadosPorIO();
     this.ordenarColaListos();
   }
 
@@ -68,7 +68,7 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
   ordenarColaListos = () => {
     this.colaListos.sort(
       (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
-        procesoB.prioridad - procesoA.prioridad,
+        procesoA.rafagaCPUPendienteEnEjecucion - procesoB.rafagaCPUPendienteEnEjecucion,
     );
   };
 

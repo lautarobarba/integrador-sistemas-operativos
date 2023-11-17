@@ -14,7 +14,7 @@ import {
   ejecutarUnTickTIP,
 } from './common';
 
-export class EjecutorPE implements EjecutorProcesosStrategy {
+export class EjecutorFCFS implements EjecutorProcesosStrategy {
   planificador: PlanificadorDeProcesos;
   unidadDeTiempo: number;
   colaListos: ProcesoEnEjecucion[];
@@ -37,7 +37,6 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
 
     this.actualizarColaBloqueadosPorIO();
     this.actualizarColaListos();
-    this.ordenarColaListos();
   }
 
   avanzarUnaUnidadDeTiempo = () => {
@@ -63,13 +62,6 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
           rafagaIOPendienteEnEjecucion: proceso.duracionRafagaIO,
         });
       });
-  };
-
-  ordenarColaListos = () => {
-    this.colaListos.sort(
-      (procesoA: ProcesoEnEjecucion, procesoB: ProcesoEnEjecucion) =>
-        procesoB.prioridad - procesoA.prioridad,
-    );
   };
 
   actualizarColaBloqueadosPorIO = () => {
@@ -126,7 +118,6 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
         this.avanzarUnaUnidadDeTiempo();
         this.actualizarColaBloqueadosPorIO();
         this.actualizarColaListos();
-        this.ordenarColaListos();
       } else {
         // Tomo el primer proceso de la cola de listos (Previamente ordenada segun politica seleccionada)
         // Reviso si el proceso actual es distinto al ultimo ejecutado
@@ -148,7 +139,6 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
             this.actualizarColaListos();
           }
           this.ultimoProcesoEjecutadoID = this.colaListos[0].id;
-          this.ordenarColaListos();
         } else if (
           this.ultimoProcesoEjecutadoID !== this.colaListos[0].id &&
           !this.colaListos[0].yaEjecutoSuTIP
@@ -166,7 +156,6 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
           }
           this.colaListos[0].yaEjecutoSuTIP = true;
           this.ultimoProcesoEjecutadoID = this.colaListos[0].id;
-          this.ordenarColaListos();
         } else {
           // Una vez que el proceso esta listo para ser ejecutado se pueden dar las siguientes situaciones:
           //  raf_cpu_pen > 0 && cant_raf_cpu >= 0    => Ejecuto un tick de CPU
@@ -223,7 +212,6 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
             });
             this.colaListos.shift();
           }
-          this.ordenarColaListos();
         }
       }
     }

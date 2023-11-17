@@ -8,7 +8,7 @@ import { enqueueSnackbar } from "notistack";
 export const PlanificadorForm = () => {
     const { status, setStatus, procesos, planificador, setPlanificador, setResultadoPlanificador } = useContext(AppContext);
 
-    const [politicaInput, setPoliticaInput] = useState<'fcfs' | 'rr' | 'spn' | 'srtn' | 'pe'>("fcfs");
+    const [politicaInput, setPoliticaInput] = useState<'fcfs' | 'rr' | 'spn' | 'srtn' | 'pe'>("srtn");
     const [quantumInput, setQuantumInput] = useState<number>(0);
     const [tipInput, setTipInput] = useState<number>(0);
     const [tfpInput, setTfpInput] = useState<number>(0);

@@ -62,6 +62,48 @@ export const ModalConsigna = (props: ModalConsignaProps) => {
                     <li>duración de la ráfaga de entrada-salida entre ráfagas de CPU</li>
                     <li>prioridad externa</li>
                 </ul>
+                <p style={{ marginTop: '0.5rem', marginBottom: 0 }}>
+                    Completada la lectura del archivo aceptará una entrada por teclado que indicará la política de
+                    planificación a aplicar a la tanda. Como mínimo se deben permitir las siguientes opciones:
+                </p>
+                <ol style={{ marginTop: '0.5rem', listStyleType: 'upper-alpha' }}>
+                    <li>FCFS (First Come First Served)</li>
+                    <li>Prioridad Externa</li>
+                    <li>Round-Robin</li>
+                    <li>SPN (Shortest Process Next)</li>
+                    <li>SRTN (Shortest Remaining Time Next)</li>
+                </ol>
+                <p style={{ marginTop: '0.5rem', marginBottom: 0 }}>
+                    Finalmente permitirá introducir los siguientes datos:
+                </p>
+                <ul style={{ marginTop: '0.5rem' }}>
+                    <li>Tiempo que utiliza el sistema operativo para aceptar los nuevos procesos (TIP)</li>
+                    <li>Tiempo que utiliza el sistema operativo para terminar los procesos (TFP)</li>
+                    <li>Tiempo de conmutación entre procesos (TCP)</li>
+                    <li>Quantum (si fuera necesario)</li>
+                </ul>
+                <p style={{ marginTop: '0.5rem', marginBottom: 0 }}>
+                    El simulador ejecutará la tanda hasta que se hayan completado la totalidad de los trabajos
+                    produciendo las siguientes salidas:
+                </p>
+                <p style={{ marginTop: '0.5rem', marginBottom: 0 }}>
+                    Un archivo en el que se indiquen todos los eventos que se producen en el sistema a lo largo
+                    de la simulación y el tiempo en el que ocurren los mismos. Ejemplos de eventos: arriba un
+                    trabajo, se incorpora un trabajo al sistema, se completa la ráfaga del proceso que se está
+                    ejecutando, se agota el quantum, termina una operación de entrada-salida, se atiende una
+                    interrupción de entrada-salida, termina un proceso.
+                </p>
+                <p style={{ marginTop: '0.5rem', marginBottom: 0 }}>
+                    Al finalizar la simulación imprimirá y mostrará por pantalla –como mínimo– los siguientes
+                    indicadores:
+                </p>
+                <ol style={{ marginTop: '0.5rem', listStyleType: 'upper-alpha' }}>
+                    <li>Para cada proceso: Tiempo de Retorno, Tiempo de Retorno Normalizado,
+                        Tiempo en Estado de Listo</li>
+                    <li>Para la tanda de procesos: Tiempo de Retorno y Tiempo Medio de Retorno</li>
+                    <li>Para el uso de la CPU: Tiempos de CPU desocupada, CPU utilizada por el
+                        SO, CPU utilizada por los procesos (en tiempos absolutos y porcentuales)</li>
+                </ol>
             </DialogContent>
 
             <DialogActions>

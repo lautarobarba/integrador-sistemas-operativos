@@ -9,7 +9,7 @@ export const PlanificadorForm = () => {
     const { status, setStatus, procesos, planificador, setPlanificador, setResultadoPlanificador } = useContext(AppContext);
 
     const [politicaInput, setPoliticaInput] = useState<'fcfs' | 'rr' | 'spn' | 'srtn' | 'pe'>("fcfs");
-    const [quantumInput, setQuantumInput] = useState<number>(0);
+    const [quantumInput, setQuantumInput] = useState<number>(4);
     const [tipInput, setTipInput] = useState<number>(0);
     const [tfpInput, setTfpInput] = useState<number>(0);
     const [tcpInput, setTcpInput] = useState<number>(0);
@@ -125,9 +125,9 @@ export const PlanificadorForm = () => {
                                                 setQuantumInput(Number(event.target.value));
                                                 resetResultados();
                                             }}
-                                            error={quantumInput < 0}
-                                            helperText={quantumInput < 0
-                                                ? "Por favor ingrese un valor >= 0"
+                                            error={quantumInput < 1}
+                                            helperText={quantumInput < 1
+                                                ? "Por favor ingrese un valor >= 1"
                                                 : "Quantum para Round Robin"
                                             }
                                             fullWidth
@@ -211,7 +211,7 @@ export const PlanificadorForm = () => {
                                             (tipInput < 0) ||
                                             (tfpInput < 0) ||
                                             (tcpInput < 0) ||
-                                            (politicaInput === 'rr' && quantumInput < 0)
+                                            (politicaInput === 'rr' && quantumInput < 1)
                                         }
                                     >Ejecutar Tanda</Button>
                                 </Grid>

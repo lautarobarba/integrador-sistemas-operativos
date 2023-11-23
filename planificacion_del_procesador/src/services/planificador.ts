@@ -2,6 +2,7 @@ import { PlanificadorDeProcesos, ResultadoPlanificador } from '../interfaces';
 import { EjecutorProcesosStrategy } from './common';
 import { EjecutorFCFS } from './fcfs';
 import { EjecutorPE } from './pe';
+import { EjecutorRR } from './rr';
 import { EjecutorSPN } from './spn';
 import { EjecutorSRTN } from './srtn';
 
@@ -15,11 +16,10 @@ export const ejecutarPlanificacion = async (
       console.log('== Ejecutando planificador de procesos (política FSFC) ==');
       ejecutorProcesos = new EjecutorFCFS(planificador);
       break;
-    // case 'rr':
-    //   console.log('Ejecutando RR');
-    //   resultado.tiempo_retorno_tanda = 1;
-    //   resultado.tiempo_medio_retorno_tanda = 1;
-    //   break;
+    case 'rr':
+      console.log('== Ejecutando planificador de procesos (política RR) ==');
+      ejecutorProcesos = new EjecutorRR(planificador);
+      break;
     case 'spn':
       console.log('== Ejecutando planificador de procesos (política SPN) ==');
       ejecutorProcesos = new EjecutorSPN(planificador);
@@ -34,7 +34,6 @@ export const ejecutarPlanificacion = async (
       break;
     default:
       throw Error('Error en política seleccionada - Falta implementación');
-      break;
   }
 
   console.log({ planificador });

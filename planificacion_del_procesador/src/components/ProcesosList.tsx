@@ -61,7 +61,7 @@ export const ProcesosList = () => {
   ];
 
   return (
-    <>
+    <div data-aos="fade-up">
       {status == 'preparado' && (
         <div style={{ textAlign: 'center' }}>
           <img
@@ -84,6 +84,6 @@ export const ProcesosList = () => {
           </Grid>
         </div>
       )}
-    </>
+    </div>
   );
 };

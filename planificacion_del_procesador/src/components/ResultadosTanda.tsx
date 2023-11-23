@@ -5,6 +5,8 @@ import { Box, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHea
 export const ResultadosTanda = () => {
     const { resultadoPlanificador } = useContext(AppContext);
     const [tiempoMedioRetorno, setTiempoMedioRetorno] = useState(0);
+    const [tiempoCPUEnServicio, setTiempoCPUEnServicio] = useState(0);
+    const [tiempoCPUEnServicioPorcentual, setTiempoCPUEnServicioPorcentual] = useState(0);
 
     // Calculo el tiempo medio de retorno
     useEffect(() => {
@@ -12,7 +14,17 @@ export const ResultadosTanda = () => {
             const tiempoMedioR = resultadoPlanificador.procesosFinalizados.reduce((sum, curr) => sum + curr.tiempoRetorno, 0);
             setTiempoMedioRetorno(tiempoMedioR / resultadoPlanificador.procesosFinalizados.length);
         }
+
+        const tiempoCPUEnServicioAux = resultadoPlanificador.tiempoRetornoTanda
+            - resultadoPlanificador.tiempoCPUDesocupada
+            - resultadoPlanificador.tiempoCPUConSO;
+        setTiempoCPUEnServicio(tiempoCPUEnServicioAux);
+
+        const tiempoCPUEnServicioPorcentualAux = tiempoCPUEnServicioAux / resultadoPlanificador.tiempoRetornoTanda * 100;
+        setTiempoCPUEnServicioPorcentual(tiempoCPUEnServicioPorcentualAux);
+
     }, [resultadoPlanificador]);
+
     return (
         <div style={{ margin: '1rem' }}>
             <Grid container justifyContent={'center'}>
@@ -26,6 +38,7 @@ export const ResultadosTanda = () => {
                                     <TableCell>T. CPU desocupada</TableCell>
                                     <TableCell>T. CPU usado por S.O.</TableCell>
                                     <TableCell>T. CPU en servicio</TableCell>
+                                    <TableCell>T. CPU en servicio %</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -49,7 +62,11 @@ export const ResultadosTanda = () => {
                                     </TableCell>
 
                                     <TableCell align="left">
-                                        {resultadoPlanificador.tiempoRetornoTanda - resultadoPlanificador.tiempoCPUDesocupada - resultadoPlanificador.tiempoCPUConSO}
+                                        {tiempoCPUEnServicio}
+                                    </TableCell>
+
+                                    <TableCell align="left">
+                                        {`${tiempoCPUEnServicioPorcentual.toFixed(2)} %`}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

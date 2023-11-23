@@ -30,7 +30,9 @@ export const PlanificadorForm = () => {
                 historialEstados: [],
                 procesosFinalizados: [],
                 tiempoRetornoTanda: 0,
-                tiempoMedioRetornoTanda: 0
+                tiempoMedioRetornoTanda: 0,
+                tiempoCPUConSO: 0,
+                tiempoCPUDesocupada: 0,
             } as ResultadoPlanificador);
             setStatus('cargado');
             enqueueSnackbar('Error: no se pudo ejecutar la tanda...', {
@@ -39,6 +41,18 @@ export const PlanificadorForm = () => {
             });
             console.log(e);
         }
+    }
+
+    const resetResultados = () => {
+        setResultadoPlanificador({
+            historialEstados: [],
+            procesosFinalizados: [],
+            tiempoRetornoTanda: 0,
+            tiempoMedioRetornoTanda: 0,
+            tiempoCPUConSO: 0,
+            tiempoCPUDesocupada: 0,
+        } as ResultadoPlanificador);
+        setStatus('cargado');
     }
 
     useEffect(() => {
@@ -88,6 +102,7 @@ export const PlanificadorForm = () => {
                                                 } else {
                                                     setPoliticaInput("fcfs");
                                                 }
+                                                resetResultados();
                                             }}
                                         >
                                             <MenuItem value={"fcfs"}>First Come First Served</MenuItem>
@@ -106,7 +121,10 @@ export const PlanificadorForm = () => {
                                             name='quantum'
                                             label='Quantum'
                                             value={quantumInput}
-                                            onChange={(event) => setQuantumInput(Number(event.target.value))}
+                                            onChange={(event) => {
+                                                setQuantumInput(Number(event.target.value));
+                                                resetResultados();
+                                            }}
                                             error={quantumInput < 0}
                                             helperText={quantumInput < 0
                                                 ? "Por favor ingrese un valor >= 0"
@@ -126,7 +144,10 @@ export const PlanificadorForm = () => {
                                         name='tip'
                                         label='TIP'
                                         value={tipInput}
-                                        onChange={(event) => setTipInput(Number(event.target.value))}
+                                        onChange={(event) => {
+                                            setTipInput(Number(event.target.value));
+                                            resetResultados();
+                                        }}
                                         error={tipInput < 0}
                                         helperText={tipInput < 0
                                             ? "Por favor ingrese un valor >= 0"
@@ -145,7 +166,10 @@ export const PlanificadorForm = () => {
                                         name='tcp'
                                         label='TCP'
                                         value={tcpInput}
-                                        onChange={(event) => setTcpInput(Number(event.target.value))}
+                                        onChange={(event) => {
+                                            setTcpInput(Number(event.target.value));
+                                            resetResultados();
+                                        }}
                                         error={tcpInput < 0}
                                         helperText={tcpInput < 0
                                             ? "Por favor ingrese un valor >= 0"
@@ -164,7 +188,10 @@ export const PlanificadorForm = () => {
                                         name='tfp'
                                         label='TFP'
                                         value={tfpInput}
-                                        onChange={(event) => setTfpInput(Number(event.target.value))}
+                                        onChange={(event) => {
+                                            setTfpInput(Number(event.target.value));
+                                            resetResultados();
+                                        }}
                                         error={tfpInput < 0}
                                         helperText={tfpInput < 0
                                             ? "Por favor ingrese un valor >= 0"

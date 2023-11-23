@@ -7,12 +7,12 @@ import { ProcesosCompletadosList } from './ProcesosCompletadosList';
 import { ResultadosTanda } from './ResultadosTanda';
 
 export const ResultadosPlanificador = () => {
-  const { status, resultadoPlanificador } = useContext(AppContext);
+  const { status } = useContext(AppContext);
 
   return (
     <>
       {status === 'finalizado' && (
-        <>
+        <div data-aos="fade-up">
           <Grid container flexDirection={'column'} alignContent={'left'} style={{ margin: '1rem' }}>
             <Typography variant='h6' component='span'>
               Resultados Tanda
@@ -36,7 +36,7 @@ export const ResultadosPlanificador = () => {
             </Typography>
           </Grid>
           <DiagramaGantt />
-        </>
+        </div>
       )}
     </>
   );

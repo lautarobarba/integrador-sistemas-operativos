@@ -8,7 +8,7 @@ export const DiagramaGantt = () => {
     const { resultadoPlanificador } = useContext(AppContext);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [rows, setRows] = useState<any[]>([]);
-    const [processesCount, setProcessesCount] = useState<number>(0);
+    // const [processesCount, setProcessesCount] = useState<number>(0);
 
     const columns = [
         { type: 'string', id: 'proceso' },
@@ -75,7 +75,7 @@ export const DiagramaGantt = () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rowsAux.sort((a: any, b: any) => (b[0] < a[0] ? -1 : 1));
         setRows(rowsAux);
-        setProcessesCount(processesNamesSet.size);
+        // setProcessesCount(processesNamesSet.size);
     }, [resultadoPlanificador]);
 
     return (

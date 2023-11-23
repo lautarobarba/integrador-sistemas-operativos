@@ -12,6 +12,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { PlanificadorForm } from './components/PlanificadorForm';
 import { ResultadosPlanificador } from './components/ResultadosPlanificador';
 import { SnackbarProvider } from 'notistack';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -22,6 +25,11 @@ const theme = createTheme({
 });
 
 function App() {
+
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <AppContextProvider>
@@ -34,7 +42,7 @@ function App() {
         <ProcesosList />
 
         <PlanificadorForm />
-        <hr style={{ width: '50%' }} />
+        <hr style={{ width: '50%' }} data-aos="fade-up" />
 
         <ResultadosPlanificador />
         {/* ICONO EN EJECUCION 

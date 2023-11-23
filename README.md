@@ -13,7 +13,7 @@ $ npm run start
 Los archivos con las tandas de procesos tienen el siguiente formato:
 
 ```text
-#COMENTATIO: TANDA DE PRUEBA
+#COMENTARIO: TANDA DE PRUEBA
 #NOMBRE_PROCESO     ;#TIEMPO_ARRIBO     ;#CANTIDAD_RAFAGAS      ;#DURACION_RAFAGAS_CPU      ;#DURACION_RAFAGAS_IO       ;#PRIORIDAD
 Proc1               ;2                  ;4                      ;2                          ;3                          ;1
 Proc2               ;3                  ;5                      ;3                          ;4                          ;2

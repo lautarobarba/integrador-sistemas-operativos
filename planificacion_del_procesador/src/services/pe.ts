@@ -2,6 +2,7 @@ import {
   PlanificadorDeProcesos,
   Proceso,
   ProcesoEnEjecucion,
+  ProcesoFinalizado,
   ResultadoPlanificador,
 } from '../interfaces';
 import {
@@ -61,6 +62,8 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
           yaEjecutoSuTIP: this.planificador.tip === 0 ? true : false,
           rafagaCPUPendienteEnEjecucion: proceso.duracionRafagaCPU,
           rafagaIOPendienteEnEjecucion: proceso.duracionRafagaIO,
+          tiempoServicio: 0,
+          tiempoEsperaListo: 0,
         });
       });
   };
@@ -111,14 +114,7 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
   // Algoritmo de ejecución para política PE.
   public ejecutar = () => {
     // Ejecutar uno a uno sin interrupciones.
-    let contador: number = 0;
-    const habilitarCorte: boolean = true;
-    while (
-      this.resultado.procesosFinalizados.length < this.planificador.procesos.length &&
-      contador < 100 &&
-      habilitarCorte
-    ) {
-      contador = contador + 1;
+    while (this.resultado.procesosFinalizados.length < this.planificador.procesos.length) {
       // Reviso si todavia no hay ningun proceso en la cola de listos y el procesador esta IDLE
       if (this.colaListos.length === 0) {
         // EL procesador esta en idle
@@ -180,6 +176,16 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
               this.resultado.historialEstados,
               this.unidadDeTiempo,
             );
+
+            // Actualizo ticks de servicios y espera en cola de listos
+            this.colaListos[0].tiempoServicio = this.colaListos[0].tiempoServicio + 1;
+
+            if (this.colaListos.length > 1) {
+              for (let i = 1; i < this.colaListos.length; i++) {
+                this.colaListos[i].tiempoEsperaListo = this.colaListos[i].tiempoEsperaListo + 1;
+              }
+            }
+
             this.ultimoProcesoEjecutadoID = this.colaListos[0].id;
             this.avanzarUnaUnidadDeTiempo();
             this.actualizarColaBloqueadosPorIO();
@@ -219,7 +225,11 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
             //  tengo que ver como sacar un reporte de sus datos y agregarlo a la lista de procesosFinalizados
             this.resultado.procesosFinalizados.push({
               ...this.colaListos[0],
-              tiempoRetorno: this.unidadDeTiempo - 1,
+              instanteRetorno: this.unidadDeTiempo,
+              tiempoRetorno: this.unidadDeTiempo - this.colaListos[0].tiempoDeArribo,
+              tiempoRetornoNormalizado:
+                (this.unidadDeTiempo - this.colaListos[0].tiempoDeArribo) /
+                this.colaListos[0].tiempoServicio,
             });
             this.colaListos.shift();
           }
@@ -228,6 +238,10 @@ export class EjecutorPE implements EjecutorProcesosStrategy {
       }
     }
 
+    this.resultado.procesosFinalizados.sort(
+      (procesoA: ProcesoFinalizado, procesoB: ProcesoFinalizado) => procesoA.id - procesoB.id,
+    );
+    this.resultado.tiempoRetornoTanda = this.unidadDeTiempo;
     return this.resultado;
   };
 }

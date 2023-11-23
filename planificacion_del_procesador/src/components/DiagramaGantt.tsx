@@ -100,7 +100,8 @@ export const DiagramaGantt = () => {
                         position: 'top',
                     },
                 }}
-                style={{ margin: '1rem', border: '1px solid black' }}
+                style={{ margin: '1rem' }}
+            // style={{ margin: '1rem', border: '1px solid black' }}
             />
             {/* </div> */}
         </>

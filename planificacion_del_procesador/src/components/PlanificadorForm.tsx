@@ -8,7 +8,7 @@ import { enqueueSnackbar } from "notistack";
 export const PlanificadorForm = () => {
     const { status, setStatus, procesos, planificador, setPlanificador, setResultadoPlanificador } = useContext(AppContext);
 
-    const [politicaInput, setPoliticaInput] = useState<'fcfs' | 'rr' | 'spn' | 'srtn' | 'pe'>("srtn");
+    const [politicaInput, setPoliticaInput] = useState<'fcfs' | 'rr' | 'spn' | 'srtn' | 'pe'>("fcfs");
     const [quantumInput, setQuantumInput] = useState<number>(0);
     const [tipInput, setTipInput] = useState<number>(0);
     const [tfpInput, setTfpInput] = useState<number>(0);
@@ -17,13 +17,28 @@ export const PlanificadorForm = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ejecutarTanda = async (event: any) => {
         event.preventDefault();
-        const resultado: ResultadoPlanificador = await ejecutarPlanificacion(planificador);
-        setResultadoPlanificador(resultado);
-        setStatus('finalizado');
-        enqueueSnackbar('¡Tanda de procesos ejecutada!', {
-            anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
-            variant: 'success',
-        });
+        try {
+            const resultado: ResultadoPlanificador = await ejecutarPlanificacion(planificador);
+            setResultadoPlanificador(resultado);
+            setStatus('finalizado');
+            enqueueSnackbar('¡Tanda de procesos ejecutada!', {
+                anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+                variant: 'success',
+            });
+        } catch (e) {
+            setResultadoPlanificador({
+                historialEstados: [],
+                procesosFinalizados: [],
+                tiempoRetornoTanda: 0,
+                tiempoMedioRetornoTanda: 0
+            } as ResultadoPlanificador);
+            setStatus('cargado');
+            enqueueSnackbar('Error: no se pudo ejecutar la tanda...', {
+                anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+                variant: 'error',
+            });
+            console.log(e);
+        }
     }
 
     useEffect(() => {

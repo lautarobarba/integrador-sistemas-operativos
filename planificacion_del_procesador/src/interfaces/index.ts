@@ -44,11 +44,14 @@ export type ProcesoEnEjecucion = Proceso & {
   yaEjecutoSuTIP: boolean;
   rafagaCPUPendienteEnEjecucion: number;
   rafagaIOPendienteEnEjecucion: number;
+  tiempoServicio: number;
+  tiempoEsperaListo: number;
 };
 
 export type ProcesoFinalizado = ProcesoEnEjecucion & {
+  instanteRetorno: number;
   tiempoRetorno: number;
-  //TODO:faltan mas datos del proceso finalizado
+  tiempoRetornoNormalizado: number;
 };
 
 export type ResultadoPlanificador = {

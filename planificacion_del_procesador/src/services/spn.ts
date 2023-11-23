@@ -34,6 +34,8 @@ export class EjecutorSPN implements EjecutorProcesosStrategy {
       procesosFinalizados: [],
       tiempoRetornoTanda: 0,
       tiempoMedioRetornoTanda: 0,
+      tiempoCPUDesocupada: 0,
+      tiempoCPUConSO: 0,
     } as ResultadoPlanificador;
 
     this.actualizarColaListos();
@@ -119,6 +121,7 @@ export class EjecutorSPN implements EjecutorProcesosStrategy {
       if (this.colaListos.length === 0) {
         // EL procesador esta en idle
         ejecutarUnTickIDLE(this.resultado.historialEstados, this.unidadDeTiempo);
+        this.resultado.tiempoCPUDesocupada = this.resultado.tiempoCPUDesocupada + 1;
         this.avanzarUnaUnidadDeTiempo();
         this.actualizarColaBloqueadosPorIO();
         this.actualizarColaListos();
@@ -139,6 +142,7 @@ export class EjecutorSPN implements EjecutorProcesosStrategy {
               this.resultado.historialEstados,
               this.unidadDeTiempo,
             );
+            this.resultado.tiempoCPUConSO = this.resultado.tiempoCPUConSO + 1;
             this.avanzarUnaUnidadDeTiempo();
             this.actualizarColaBloqueadosPorIO();
             this.actualizarColaListos();
@@ -156,6 +160,7 @@ export class EjecutorSPN implements EjecutorProcesosStrategy {
               this.resultado.historialEstados,
               this.unidadDeTiempo,
             );
+            this.resultado.tiempoCPUConSO = this.resultado.tiempoCPUConSO + 1;
             this.avanzarUnaUnidadDeTiempo();
             this.actualizarColaBloqueadosPorIO();
             this.actualizarColaListos();
@@ -216,6 +221,7 @@ export class EjecutorSPN implements EjecutorProcesosStrategy {
                 this.resultado.historialEstados,
                 this.unidadDeTiempo,
               );
+              this.resultado.tiempoCPUConSO = this.resultado.tiempoCPUConSO + 1;
               this.avanzarUnaUnidadDeTiempo();
               this.actualizarColaBloqueadosPorIO();
               this.actualizarColaListos();

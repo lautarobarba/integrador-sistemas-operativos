@@ -27,11 +27,12 @@ export const NavBar = () => {
                 lineHeight: '1.6rem',
                 fontWeight: 500,
                 fontSize: '1.25rem',
-                letterSpacing: '0.0075em'
+                letterSpacing: '0.0075em',
+                cursor: 'default'
               }}>Planificación de procesos</span>
 
             <Grid item display={{ xs: 'none', sm: 'block' }}>
-              <span onClick={() => setShowConsigna(!showConsigna)}><HelpIcon /></span>
+              <span onClick={() => setShowConsigna(!showConsigna)} style={{ cursor: 'pointer' }}><HelpIcon /></span>
             </Grid>
             <ModalConsigna showModal={showConsigna} setShowModal={setShowConsigna} />
 
@@ -40,7 +41,8 @@ export const NavBar = () => {
                 margin: 0,
                 fontFamily: "Roboto",
                 lineHeight: '1.6rem',
-                fontSize: '1rem'
+                fontSize: '1rem',
+                cursor: 'default'
               }}>ESTADO [{status.toUpperCase()}]</span>
           </Grid>
         </Toolbar>

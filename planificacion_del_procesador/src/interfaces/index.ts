@@ -62,4 +62,6 @@ export type ResultadoPlanificador = {
   // Estado (Resultados) de la tanda
   tiempoRetornoTanda: number;
   tiempoMedioRetornoTanda: number;
+  tiempoCPUDesocupada: number;
+  tiempoCPUConSO: number;
 };

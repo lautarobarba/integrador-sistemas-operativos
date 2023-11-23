@@ -23,6 +23,9 @@ export const ResultadosTanda = () => {
                                 <TableRow>
                                     <TableCell>Tiempo de retorno de la tanda</TableCell>
                                     <TableCell>Tiempo medio de retorno</TableCell>
+                                    <TableCell>T. CPU desocupada</TableCell>
+                                    <TableCell>T. CPU usado por S.O.</TableCell>
+                                    <TableCell>T. CPU en servicio</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -35,6 +38,18 @@ export const ResultadosTanda = () => {
 
                                     <TableCell align="left">
                                         {tiempoMedioRetorno.toFixed(2)}
+                                    </TableCell>
+
+                                    <TableCell align="left">
+                                        {resultadoPlanificador.tiempoCPUDesocupada}
+                                    </TableCell>
+
+                                    <TableCell align="left">
+                                        {resultadoPlanificador.tiempoCPUConSO}
+                                    </TableCell>
+
+                                    <TableCell align="left">
+                                        {resultadoPlanificador.tiempoRetornoTanda - resultadoPlanificador.tiempoCPUDesocupada - resultadoPlanificador.tiempoCPUConSO}
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

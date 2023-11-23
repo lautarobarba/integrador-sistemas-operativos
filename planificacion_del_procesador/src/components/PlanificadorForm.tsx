@@ -44,15 +44,15 @@ export const PlanificadorForm = () => {
     }
 
     const resetResultados = () => {
-        setResultadoPlanificador({
-            historialEstados: [],
-            procesosFinalizados: [],
-            tiempoRetornoTanda: 0,
-            tiempoMedioRetornoTanda: 0,
-            tiempoCPUConSO: 0,
-            tiempoCPUDesocupada: 0,
-        } as ResultadoPlanificador);
-        setStatus('cargado');
+        // setResultadoPlanificador({
+        //     historialEstados: [],
+        //     procesosFinalizados: [],
+        //     tiempoRetornoTanda: 0,
+        //     tiempoMedioRetornoTanda: 0,
+        //     tiempoCPUConSO: 0,
+        //     tiempoCPUDesocupada: 0,
+        // } as ResultadoPlanificador);
+        // setStatus('cargado');
     }
 
     useEffect(() => {

@@ -1,3 +1,4 @@
+#COMENTATIO: TANDA DE PRUEBA
 #NOMBRE_PROCESO     ;#TIEMPO_ARRIBO     ;#CANTIDAD_RAFAGAS      ;#DURACION_RAFAGAS_CPU      ;#DURACION_RAFAGAS_IO       ;#PRIORIDAD
 Proc1               ;2                  ;4                      ;2                          ;3                          ;1
 Proc2               ;3                  ;5                      ;3                          ;4                          ;2

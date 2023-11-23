@@ -1,8 +1,8 @@
-#COMENTATIO: Trabajo Práctico 3 - Ejercicio 6
+#COMENTATIO: Trabajo Práctico 3 - Ejercicio 15
+#  NOTA: Para el Proceso2 se usaron 2 rafagas de [20, 20], en vez de 2 de [20, 10] como indica la consigna.
 #NOMBRE_PROCESO     ;#TIEMPO_ARRIBO     ;#CANTIDAD_RAFAGAS      ;#DURACION_RAFAGAS_CPU      ;#DURACION_RAFAGAS_IO       ;#PRIORIDAD
-ProcA               ;0                  ;1                      ;10                         ;0                          ;3
-ProcB               ;0                  ;1                      ;6                          ;0                          ;5
-ProcC               ;3                  ;2                      ;2                          ;4                          ;6
-ProcD               ;0                  ;1                      ;4                          ;0                          ;1
-ProcE               ;0                  ;1                      ;8                          ;0                          ;4
+ProcA               ;0                  ;2                      ;10                         ;25                         ;0
+ProcB               ;4                  ;2                      ;20                         ;25                         ;0
+ProcC               ;8                  ;3                      ;15                         ;25                         ;0
+ProcD               ;10                 ;2                      ;15                         ;25                         ;0
 #NOMBRE_PROCESO     ;#TIEMPO_ARRIBO     ;#CANTIDAD_RAFAGAS      ;#DURACION_RAFAGAS_CPU      ;#DURACION_RAFAGAS_IO       ;#PRIORIDAD
